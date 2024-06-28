@@ -7,3 +7,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+upload:
+  path: C:\Users\Ilya\Desktop\course\restaurant-automation\src\main\resources\static\img

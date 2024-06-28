@@ -1,4 +1,4 @@
-package ru.isshepelev.restaurantautomation.entity;
+package ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -19,4 +19,5 @@ public class Product {
     private String description;
     private BigDecimal price;
     private int count;
+    private String filename;
 }

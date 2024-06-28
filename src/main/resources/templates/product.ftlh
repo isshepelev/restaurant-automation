@@ -25,6 +25,9 @@
         <input type="number" id="count" name="count" required>
     </div>
     <div>
+        <input type="file" name="file">
+    </div>
+    <div>
         <button type="submit">Создать продукт</button>
     </div>
 </form>

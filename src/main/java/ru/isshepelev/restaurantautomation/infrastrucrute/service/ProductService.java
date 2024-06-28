@@ -1,7 +1,6 @@
-package ru.isshepelev.restaurantautomation.service;
+package ru.isshepelev.restaurantautomation.infrastrucrute.service;
 
-import org.springframework.web.multipart.MultipartFile;
-import ru.isshepelev.restaurantautomation.entity.Product;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
 
 import java.util.List;
 

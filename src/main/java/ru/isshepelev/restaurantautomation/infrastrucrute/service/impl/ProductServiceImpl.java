@@ -1,14 +1,14 @@
-package ru.isshepelev.restaurantautomation.service.impl;
+package ru.isshepelev.restaurantautomation.infrastrucrute.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
-import ru.isshepelev.restaurantautomation.entity.Product;
-import ru.isshepelev.restaurantautomation.repository.ProductRepository;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.repository.ProductRepository;
 
-import ru.isshepelev.restaurantautomation.service.ProductService;
+import ru.isshepelev.restaurantautomation.infrastrucrute.service.ProductService;
 
 import java.util.List;
 
