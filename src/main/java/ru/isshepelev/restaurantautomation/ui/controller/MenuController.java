@@ -1,11 +1,9 @@
-package ru.isshepelev.restaurantautomation.ui.controller.menuController;
+package ru.isshepelev.restaurantautomation.ui.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.ProductService;
 
 @Controller

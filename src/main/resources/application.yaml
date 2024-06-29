@@ -10,3 +10,12 @@ spring:
 
 upload:
   path: C:\Users\Ilya\Desktop\course\restaurant-automation\src\main\resources\static\img
+
+
+
+  session:
+    timeout: 1999999m
+    store-type : redis
+
+security:
+  ignored: /**

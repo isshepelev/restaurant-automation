@@ -1,4 +1,4 @@
-package ru.isshepelev.restaurantautomation.ui.controller.productController;
+package ru.isshepelev.restaurantautomation.ui.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
