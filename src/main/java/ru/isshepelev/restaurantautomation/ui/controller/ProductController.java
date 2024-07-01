@@ -29,7 +29,7 @@ public class ProductController {
 
         if (!file.isEmpty()) {
             File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
+            if (!uploadDir.exists()){                                     //TODO убрать этот ужас в сервис
                 uploadDir.mkdirs();
             }
             String uuidFile = UUID.randomUUID().toString();

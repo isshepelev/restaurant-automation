@@ -17,6 +17,7 @@ import ru.isshepelev.restaurantautomation.ui.dto.OrderItemDto;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void sendOrder(HttpSession http) {
+    public String sendOrder(HttpSession http) {
         Basket basket = (Basket) http.getAttribute("basket");
         if (basket == null) {
             throw new NullPointerException("Basket is empty");
@@ -44,11 +45,13 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setTimestamp(new Date());
         orderDto.setItems(basket.getOrderItems());
         orderDto.setPrepared(false);
+        orderDto.setIndividualCode(generateIndividualCode());
         orderDto.setTotalPrice(basket.getOrderItems().stream()
                 .map(OrderItemDto::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
         producer.sendOrder(orderDto);
         basket.clearBasket();
+        return orderDto.getIndividualCode();
     }
 
     @Override
@@ -64,5 +67,18 @@ public class OrderServiceImpl implements OrderService {
         order.setTimestamp(orderDto.getTimestamp());
         order.setTotalPrice(orderDto.getTotalPrice());
         orderRepository.save(order);
+    }
+
+    private String generateIndividualCode() {
+        int leftLimit = 48; // цифра 0
+        int targetStringLength = 4;
+        Random random = new Random();
+
+        String code = random.ints(leftLimit, leftLimit + 9)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        return code;
     }
 }

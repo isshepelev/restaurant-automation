@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.OrderService;
+import ru.isshepelev.restaurantautomation.ui.dto.OrderDto;
 
 @Controller
 @RequestMapping("/order")
@@ -18,13 +19,15 @@ public class OrderController {
 
     @PostMapping()
     public String order(HttpSession http, RedirectAttributes redirectAttributes) {
+        String code;
         try {
-            orderService.sendOrder(http);
+            code = orderService.sendOrder(http);
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/basket";
         }
-        return "redirect:/menu";
+        redirectAttributes.addAttribute("code", code);
+        return "redirect:/code/{code}";
     }
 
 

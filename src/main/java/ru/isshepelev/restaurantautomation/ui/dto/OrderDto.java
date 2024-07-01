@@ -14,4 +14,5 @@ public class OrderDto implements Serializable{
     private List<OrderItemDto> items;
     private boolean isPrepared;
     private BigDecimal totalPrice;
+    private String individualCode;
 }
