@@ -38,4 +38,13 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id){
         productRepository.deleteById(id);
     }
+    @Override
+    public boolean checkAndReduceStock(Product product, int quantity) {
+        if (product.getCount() >= quantity) {
+            product.setCount(product.getCount() - quantity);
+            productRepository.save(product);
+            return true;
+        }
+        return false;
+    }
 }

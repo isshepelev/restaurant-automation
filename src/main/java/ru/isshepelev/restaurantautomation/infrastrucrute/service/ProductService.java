@@ -13,4 +13,6 @@ public interface ProductService {
     List<Product> getAllProducts();
 
     void deleteProduct(Long id);
+
+    boolean checkAndReduceStock(Product product, int quantity);
 }

@@ -7,13 +7,16 @@ import ru.isshepelev.restaurantautomation.infrastrucrute.kafka.Producer;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Basket;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Order;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.OrderItem;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.repository.OrderRepository;
+import ru.isshepelev.restaurantautomation.infrastrucrute.service.ProductService;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderDto;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.OrderService;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderItemDto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +24,21 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final Producer producer;
     private final OrderRepository orderRepository;
+    private final ProductService productService;
+
 
     @Override
     public void sendOrder(HttpSession http) {
         Basket basket = (Basket) http.getAttribute("basket");
         if (basket == null) {
             throw new NullPointerException("Basket is empty");
+        }
+        for (Map.Entry<Product, Integer> entry : basket.getProducts().entrySet()){
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+            if (!productService.checkAndReduceStock(product, quantity)) {
+                throw new IllegalArgumentException("Столько товара нет: " + product.getName() + ", максимум " + product.getCount());
+            }
         }
         OrderDto orderDto = new OrderDto();
         orderDto.setTimestamp(new Date());

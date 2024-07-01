@@ -5,6 +5,11 @@
 </head>
 <body>
 <h4>Корзина</h4>
+
+<#if error??>
+    <div style="color: red;">${error}</div>
+</#if>
+
 <form action="basket/clear" method="post">
     <input type="submit" value="очистить корзину">
 </form>
@@ -23,4 +28,4 @@
     <hr>
 </#list>
 </body>
-</html>`
+</html>
