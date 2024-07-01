@@ -22,7 +22,6 @@ public class BasketServiceImpl implements BasketService {
             basket = new Basket();
             http.setAttribute("basket", basket);
         }
-        System.out.println(basket);
         return basket;
     }
 
