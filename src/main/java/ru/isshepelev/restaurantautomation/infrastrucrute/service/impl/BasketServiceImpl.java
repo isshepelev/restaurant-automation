@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Basket;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.BasketService;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.ProductService;
 
@@ -21,6 +22,7 @@ public class BasketServiceImpl implements BasketService {
             basket = new Basket();
             http.setAttribute("basket", basket);
         }
+        System.out.println(basket);
         return basket;
     }
 

@@ -11,15 +11,16 @@
 <form action="order" method="post">
     <input type="submit" value="оформить заказ">
 </form>
-    <#list basket.products as product>
-        <b>Название товара: </b>${product.name}<br>
-        <b>Описание товара: </b>${product.description}<br>
-        <b>Цена: </b>${product.price}<br>
-        <img src="/img/${product.filename}" height="70px"/><br>
-        <form action="/basket/remove/${product.id}" method="post">
-            <input type="submit" value="Удалить из корзины"/>
-        </form>
-        <hr>
-    </#list>
+<#list basket.products as product, quantity>
+    <b>Название товара: </b>${product.name}<br>
+    <b>Описание товара: </b>${product.description}<br>
+    <b>Цена: </b>${product.price}<br>
+    <b>Количество: </b>${quantity}<br>
+    <img src="/img/${product.filename}" height="70px"/><br>
+    <form action="/basket/remove/${product.id}" method="post">
+        <input type="submit" value="Удалить из корзины"/>
+    </form>
+    <hr>
+</#list>
 </body>
-</html>
+</html>`

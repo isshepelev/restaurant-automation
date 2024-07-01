@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class OrderDto implements Serializable{
     private Date timestamp;
-    private List<Product> products;
-    private BigDecimal totalPrice;
+    private List<OrderItemDto> items;
     private boolean isPrepared;
+    private BigDecimal totalPrice;
 }

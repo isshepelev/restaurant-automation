@@ -5,21 +5,18 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "orders")
-public class Order{
+public class OrderItem implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Date timestamp;
+    @ManyToOne
+    private Product product;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderItem> items;
-
-    private BigDecimal totalPrice;
+    private int quantity;
+    private BigDecimal price;
 }
