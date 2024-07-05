@@ -1,13 +1,11 @@
 package ru.isshepelev.restaurantautomation.infrastrucrute.service.impl;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.isshepelev.restaurantautomation.infrastrucrute.kafka.Producer;
-import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Basket;
-import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Order;
-import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.OrderItem;
-import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Product;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.*;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.repository.OrderRepository;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.ProductService;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderDto;
@@ -15,9 +13,7 @@ import ru.isshepelev.restaurantautomation.infrastrucrute.service.OrderService;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderItemDto;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,9 +38,10 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         OrderDto orderDto = new OrderDto();
+        orderDto.setId(UUID.randomUUID());
         orderDto.setTimestamp(new Date());
         orderDto.setItems(basket.getOrderItems());
-        orderDto.setPrepared(false);
+        orderDto.setStatus(Status.SEND_TO_KITCHEN);
         orderDto.setIndividualCode(generateIndividualCode());
         orderDto.setTotalPrice(basket.getOrderItems().stream()
                 .map(OrderItemDto::getPrice)
@@ -64,8 +61,11 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setPrice(orderItemDto.getPrice());
             return orderItem;
         }).collect(Collectors.toList()));
+        order.setId(orderDto.getId());
+        order.setOrderStatus(orderDto.getStatus());
         order.setTimestamp(orderDto.getTimestamp());
         order.setTotalPrice(orderDto.getTotalPrice());
+        order.setIndividualCode(orderDto.getIndividualCode());
         orderRepository.save(order);
     }
 
@@ -80,5 +80,14 @@ public class OrderServiceImpl implements OrderService {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return code;
+    }
+
+    @Override
+    @Transactional()
+    public List<Order> receiveOrdersSentToKitchen(){
+        List<Order> orders = orderRepository.findByOrderStatus(Status.SEND_TO_KITCHEN);
+        orders.forEach(order -> order.getItems().size()); // нужно для инициализации ленивых коллекций
+        return orders;
+
     }
 }

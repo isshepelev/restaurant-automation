@@ -1,16 +1,16 @@
 package ru.isshepelev.restaurantautomation.infrastrucrute.service;
 
-import jakarta.servlet.http.HttpSession;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Order;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderDto;
 
 import java.util.List;
 
-public interface OrderService {
+public interface KitchenService {
 
-    String sendOrder(HttpSession http);
+    List<Order> getOrders();
 
-    void saveOrder(OrderDto orderDto);
 
-    List<Order> receiveOrdersSentToKitchen();
+    void addOrder(OrderDto orderDto);
+
+    void removeOrder(Order order);
 }

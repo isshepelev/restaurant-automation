@@ -7,14 +7,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "orders")
 public class Order{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     private Date timestamp;
 
@@ -22,4 +22,6 @@ public class Order{
     private List<OrderItem> items;
 
     private BigDecimal totalPrice;
+    private Status orderStatus;
+    private String individualCode;
 }
