@@ -33,7 +33,7 @@ public class HallServiceImpl implements HallService {
         return preparedOrders;
     }
 
-    @Scheduled(initialDelay = 10000, fixedRate = 10000)
+    @Scheduled(initialDelay = 300000, fixedRate = 300000)
     private void removePreparedOrder(){
         if (!preparedOrders.isEmpty()){
             Order order = preparedOrders.remove(0);
