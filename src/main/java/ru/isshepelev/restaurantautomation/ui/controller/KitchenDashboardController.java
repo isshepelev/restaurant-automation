@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.KitchenService;
 
@@ -17,7 +19,11 @@ public class KitchenDashboardController {
     @GetMapping()
     public String viewDashboard(Model model){
         model.addAttribute("orders", kitchenService.getOrders());
-        System.out.println(kitchenService.getOrders());
         return "kitchen-dashboard";
+    }
+    @PostMapping("/mark-as-prepared/{orderId}")
+    public String prepared(@PathVariable String orderId){
+        kitchenService.removeOrder(orderId);
+        return "redirect:/kitchen-dashboard";
     }
 }

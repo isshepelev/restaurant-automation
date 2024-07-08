@@ -1,15 +1,19 @@
 package ru.isshepelev.restaurantautomation.infrastrucrute.service.impl;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.isshepelev.restaurantautomation.infrastrucrute.kafka.Producer;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Order;
 import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.OrderItem;
+import ru.isshepelev.restaurantautomation.infrastrucrute.persistance.entity.Status;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.KitchenService;
 import ru.isshepelev.restaurantautomation.infrastrucrute.service.OrderService;
 import ru.isshepelev.restaurantautomation.ui.dto.OrderDto;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,12 +21,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class KitchenServiceImpl implements KitchenService {
     private final OrderService orderService;
-    private List<Order> orders = new ArrayList<>(); // когда тут сохраняется до рестарта заказы не имеют уникального id надо постоянно обращаться в базу чтобы получать их id
+    private final Producer producer;
+    private List<Order> orders = new ArrayList<>();
 
 
     @PostConstruct
     private void addOrdersForList(){
-        orders.addAll(orderService.receiveOrdersSentToKitchen());
+        orders.addAll(orderService.receiveOrdersForStatus(Status.SEND_TO_KITCHEN));
     }
 
     @Override
@@ -48,7 +53,18 @@ public class KitchenServiceImpl implements KitchenService {
         orders.add(order);
     }
     @Override
-    public void removeOrder(Order order){
-        orders.remove(order);
+    public void removeOrder(String orderId){
+        Iterator<Order> iterator = orders.iterator();
+        while (iterator.hasNext()){
+            Order order = iterator.next();
+            if (order.getId().toString().equals(orderId)){
+                iterator.remove();
+                orderService.savePreparedOrder(order);
+                sendOrderToHall(order);
+            }
+        }
+    }
+    private void sendOrderToHall(Order order){
+        producer.sendPreparedOrder(order);
     }
 }

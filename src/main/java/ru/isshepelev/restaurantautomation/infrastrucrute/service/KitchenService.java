@@ -12,5 +12,6 @@ public interface KitchenService {
 
     void addOrder(OrderDto orderDto);
 
-    void removeOrder(Order order);
+
+    void removeOrder(String orderId);
 }

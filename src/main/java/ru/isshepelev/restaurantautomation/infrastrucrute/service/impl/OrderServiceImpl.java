@@ -68,6 +68,16 @@ public class OrderServiceImpl implements OrderService {
         order.setIndividualCode(orderDto.getIndividualCode());
         orderRepository.save(order);
     }
+    @Override
+    public void savePreparedOrder(Order order){
+        order.setOrderStatus(Status.PREPARED);
+        orderRepository.save(order);
+    }
+    @Override
+    public void saveCompletedOrder(Order order){
+        order.setOrderStatus(Status.COMPLETED);
+        orderRepository.save(order);
+    }
 
     private String generateIndividualCode() {
         int leftLimit = 48; // цифра 0
@@ -84,8 +94,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional()
-    public List<Order> receiveOrdersSentToKitchen(){
-        List<Order> orders = orderRepository.findByOrderStatus(Status.SEND_TO_KITCHEN);
+    public List<Order> receiveOrdersForStatus(Status status){
+        List<Order> orders = orderRepository.findByOrderStatus(status);
         orders.forEach(order -> order.getItems().size()); // нужно для инициализации ленивых коллекций
         return orders;
 
