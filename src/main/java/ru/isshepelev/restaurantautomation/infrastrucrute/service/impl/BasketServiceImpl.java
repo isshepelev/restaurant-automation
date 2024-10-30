@@ -32,7 +32,7 @@ public class BasketServiceImpl implements BasketService {
             basket = new Basket();
             http.setAttribute("basket", basket);
         }
-        basket.addProduct(productService.getProductById(productId)); // TODO сделать productDto и добавлять его а не сущеность Product
+        basket.addProduct(productService.getProductById(productId)); 
     }
 
 
