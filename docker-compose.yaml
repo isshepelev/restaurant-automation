@@ -52,7 +52,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     networks:
       - app-network
-#    network_mode: #докер сети
+  #    network_mode: #докер сети
 
   app:
     build: .
@@ -60,7 +60,7 @@ services:
       - "8080:8080"
     depends_on:
       postgres:
-          condition: service_started
+        condition: service_started
       redis:
         condition: service_started
       kafka:
