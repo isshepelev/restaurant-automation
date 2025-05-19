@@ -96,7 +96,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional()
     public List<Order> receiveOrdersForStatus(Status status){
         List<Order> orders = orderRepository.findByOrderStatus(status);
-        orders.forEach(order -> order.getItems().size()); // нужно для инициализации ленивых коллекций
+        orders.forEach(order -> order.getItems().size()); 
         return orders;
 
     }
